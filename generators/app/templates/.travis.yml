@@ -1,0 +1,24 @@
+git:
+  depth: 1
+language: node_js
+addons:
+  sauce_connect: true
+node_js:
+  - '5.4'
+before_script:
+  - sudo iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 80 -j REDIRECT --to-ports 9435
+cache:
+  directories:
+  - node_modules
+  - jspm_packages
+deploy:
+  - provider: releases
+    api_key: "${GITHUB_AUTH_TOKEN}"
+    on:
+      tags: true
+
+  - provider: npm
+    api_key: "${NPM_API_KEY}"
+    on:
+      tags: true
+
